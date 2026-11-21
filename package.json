@@ -3,16 +3,34 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "lint": "eslint .",
+    "test": "jest",
+    "prepare": "husky",
+    "postinstall": "patch-package",
+    "env:dev": "shx cp .env.dev .env",
+    "env:uat": "shx cp .env.uat .env",
+    "env:prod": "shx cp .env.prod .env",
+    "android:dev": "npm run env:dev && react-native run-android --active-arch-only --mode=DevDebug",
+    "android:uat": "npm run env:uat && react-native run-android --active-arch-only --mode=UATDebug",
+    "android:prod": "npm run env:prod && react-native run-android --active-arch-only --mode=PRODDebug",
+    "android:dev:release": "npm run env:dev && react-native run-android --mode=DevRelease",
+    "android:uat:release": "npm run env:uat && react-native run-android --mode=UatRelease",
+    "android:prod:release": "npm run env:prod && react-native run-android --mode=ProdRelease",
+    "build:android:dev": "npm run env:dev && cd android && ./gradlew assembleDevRelease",
+    "build:android:uat": "npm run env:uat && cd android && ./gradlew assembleUatRelease",
+    "build:android:prod": "npm run env:prod && cd android && ./gradlew assembleProdRelease",
+    "bundle:android:dev": "npm run env:dev && cd android && ./gradlew bundleDevRelease",
+    "bundle:android:uat": "npm run env:uat && cd android && ./gradlew bundleUatRelease",
+    "bundle:android:prod": "npm run env:prod && cd android && ./gradlew bundleProdRelease",
+    "ios:dev": "npm run env:dev && react-native run-ios --scheme EasyBank_DEV --mode DevDebug",
+    "ios:uat": "npm run env:uat && react-native run-ios --scheme EasyBank_UAT --mode UatDebug",
+    "ios:prod": "npm run env:prod && react-native run-ios --scheme EasyBank --mode ProdDebug"
   },
   "dependencies": {
+    "@react-native/new-app-screen": "0.88.1",
     "react": "19.3.0",
     "react-native": "0.88.1",
-    "@react-native/new-app-screen": "0.88.1",
     "react-native-safe-area-context": "^5.5.2"
   },
   "devDependencies": {
@@ -32,8 +50,10 @@
     "@types/react-test-renderer": "^19.1.0",
     "eslint": "^8.19.0",
     "jest": "^29.6.3",
+    "patch-package": "^8.0.1",
     "prettier": "2.8.8",
     "react-test-renderer": "19.3.0",
+    "shx": "^0.4.0",
     "typescript": "^6.0.3"
   },
   "engines": {
