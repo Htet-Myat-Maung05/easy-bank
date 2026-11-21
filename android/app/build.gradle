@@ -51,6 +51,7 @@ react {
     // hermesFlags = ["-O", "-output-source-map"]
 
     /* Autolinking */
+    debuggableVariants = ["devDebug", "uatDebug", "prodDebug"]
     autolinkLibrariesWithApp()
 }
 
@@ -84,6 +85,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
+
+        manifestPlaceholders = [usesCleartextTraffic: "false"]
     }
     signingConfigs {
         debug {
@@ -106,31 +109,31 @@ android {
         }
     }
 
-    flavorDimensions "enviroment"
+    flavorDimensions "environment"
     productFlavors {
         dev {
-            dimension "enviroment"
+            dimension "environment"
             applicationIdSuffix ".dev"
             resValue "string", "app_name", "EasyBank DEV"
             buildConfigField "String", "FLAVOR_TYPE", "\"dev\""
             manifestPlaceholders = [appScheme: "easybank-dev"]
         }
         uat {
-            dimension "enviroment"
+            dimension "environment"
             applicationIdSuffix ".uat"
             resValue "string", "app_name", "EasyBank UAT"
             buildConfigField "String", "FLAVOR_TYPE", "\"uat\""
             manifestPlaceholders = [appScheme: "easybank-uat"]
         }
         prod {
-            dimension "enviroment"
-            applicationIdSuffix ".prod"
+            dimension "environment"
+            applicationId "com.easybank"
             resValue "string", "app_name", "EasyBank"
             buildConfigField "String", "FLAVOR_TYPE", "\"prod\""
             manifestPlaceholders = [appScheme: "easybank"]
         }
-
-        android.applicationVariants.all { variant ->
+    }
+    applicationVariants.all { variant ->
         variant.outputs.all { output ->
             def appName = "easy-bank"
             def flavorName = variant.flavorName
@@ -142,7 +145,6 @@ android {
                 outputFileName = "${appName}.apk"
             }
         }
-}
     }
 }
 
